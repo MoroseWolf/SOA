@@ -1,11 +1,13 @@
 package com.cyteam.api.service.Impl;
 
 import com.cyteam.api.model.Ingridients;
-import com.cyteam.api.repository.MenuRepository;
+import com.cyteam.api.repository.IngridientsRepository;
 import com.cyteam.api.service.IngridientsService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class IngridientsServiceImpl implements IngridientsService {
 
     private final IngridientsRepository ingridientsRepository;
@@ -31,7 +33,7 @@ public class IngridientsServiceImpl implements IngridientsService {
 
     @Override
     public boolean update(Ingridients ingridients, Long id) {
-        if (ingridientsRepository.existsByid(id)) {
+        if (ingridientsRepository.existsById(id)) {
             ingridients.setId(id);
             ingridientsRepository.save(ingridients);
             return true;
