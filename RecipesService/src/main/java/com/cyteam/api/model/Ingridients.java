@@ -1,5 +1,6 @@
 package com.cyteam.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -30,7 +31,8 @@ public class Ingridients {
     @Column(name = "calories")
     private Integer calories;
 
-    @ManyToMany(mappedBy = "ingridSet", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToMany(mappedBy = "ingridSet", fetch = FetchType.LAZY)
     private Set<Recipe> recipesSet = new HashSet<>();
 
     public Ingridients(){ super();}
@@ -73,5 +75,13 @@ public class Ingridients {
 
     public void setCalories(Integer calories) {
         this.calories = calories;
+    }
+
+    public Set<Recipe> getRecipesSet() {
+        return recipesSet;
+    }
+
+    public void setRecipesSet(Set<Recipe> recipesSet) {
+        this.recipesSet = recipesSet;
     }
 }
