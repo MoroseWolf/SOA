@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="ingridients")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ingridients {
 
     @Id
@@ -27,6 +29,9 @@ public class Ingridients {
     @NotBlank
     @Column(name = "calories")
     private Integer calories;
+
+    @ManyToMany(mappedBy = "ingridSet", fetch = FetchType.EAGER)
+    private Set<Recipe> recipesSet = new HashSet<>();
 
     public Ingridients(){ super();}
 

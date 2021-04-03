@@ -31,7 +31,7 @@ public class Menu {
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "menu_recipe",
                 joinColumns =  { @JoinColumn(name = "menu_id", referencedColumnName = "id")},
                 inverseJoinColumns = { @JoinColumn(name = "recipe_id", referencedColumnName = "id")})

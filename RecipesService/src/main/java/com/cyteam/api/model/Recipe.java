@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "recipe")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Recipe {
 
     @Id
@@ -26,8 +26,14 @@ public class Recipe {
     @Column(name = "summrecipe_calories")
     private Integer summ_calories;
 
-    @ManyToMany(mappedBy = "recipeSet", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "recipeSet", fetch = FetchType.EAGER)
     private Set<Menu> menuSet = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "recipe_ingridients",
+            joinColumns =  { @JoinColumn(name = "recipe_id", referencedColumnName = "id")},
+            inverseJoinColumns = { @JoinColumn(name = "ingrid_id", referencedColumnName = "id")})
+    private Set<Ingridients> ingridSet = new HashSet<>();
 
     public Recipe(){
         super();
