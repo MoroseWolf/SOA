@@ -1,5 +1,6 @@
 package com.cyteam.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -26,8 +27,15 @@ public class Recipe {
     @Column(name = "summrecipe_calories")
     private Integer summ_calories;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "recipeSet", fetch = FetchType.LAZY)
     private Set<Menu> menuSet = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "recipe_ingridients",
+            joinColumns =  { @JoinColumn(name = "recipe_id", referencedColumnName = "id")},
+            inverseJoinColumns = { @JoinColumn(name = "ingrid_id", referencedColumnName = "id")})
+    private Set<Ingridients> ingridSet = new HashSet<>();
 
     public Recipe(){
         super();
@@ -62,5 +70,21 @@ public class Recipe {
 
     public void setSumm_calories(Integer summ_calories) {
         this.summ_calories = summ_calories;
+    }
+
+    public Set<Ingridients> getIngridSet() {
+        return ingridSet;
+    }
+
+    public void setIngridSet(Set<Ingridients> ingridSet) {
+        this.ingridSet = ingridSet;
+    }
+
+    public Set<Menu> getMenuSet() {
+        return menuSet;
+    }
+
+    public void setMenuSet(Set<Menu> menuSet) {
+        this.menuSet = menuSet;
     }
 }

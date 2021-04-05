@@ -1,13 +1,16 @@
 package com.cyteam.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="ingridients")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ingridients {
 
     @Id
@@ -27,6 +30,10 @@ public class Ingridients {
     @NotBlank
     @Column(name = "calories")
     private Integer calories;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "ingridSet", fetch = FetchType.LAZY)
+    private Set<Recipe> recipesSet = new HashSet<>();
 
     public Ingridients(){ super();}
 
@@ -68,5 +75,13 @@ public class Ingridients {
 
     public void setCalories(Integer calories) {
         this.calories = calories;
+    }
+
+    public Set<Recipe> getRecipesSet() {
+        return recipesSet;
+    }
+
+    public void setRecipesSet(Set<Recipe> recipesSet) {
+        this.recipesSet = recipesSet;
     }
 }
