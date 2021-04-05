@@ -1,48 +1,41 @@
 package com.example.ingridientsservice.service;
 
 import com.example.ingridientsservice.model.Product;
+import com.example.ingridientsservice.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductServiceImpl implements  ProductService {
 
-    // Хранилище клиентов
-    private static final Map<Long, Product> PRODUCT_REPOSITORY_MAP = new HashMap<>();
+    private final ProductRepository productRepository;
 
-    // Переменная для генерации ID клиента
-    private static final AtomicLong PRODUCT_ID_HOLDER = new AtomicLong();
-
-
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public void create(Product product) {
-        final Long productId = PRODUCT_ID_HOLDER.incrementAndGet();
-        product.setId(productId);
-        PRODUCT_REPOSITORY_MAP.put(productId, product);
-
+        productRepository.save(product);
     }
 
     @Override
     public List<Product> readAll() {
-        return new ArrayList<>(PRODUCT_REPOSITORY_MAP.values());
+        return productRepository.findAll();
     }
 
     @Override
     public Product read(Long id) {
-        return PRODUCT_REPOSITORY_MAP.get(id);
+        return productRepository.getOne(id);
     }
 
     @Override
     public boolean update(Product product, Long id) {
-        if (PRODUCT_REPOSITORY_MAP.containsKey(id)) {
+        if (productRepository.existsById(id)) {
             product.setId(id);
-            PRODUCT_REPOSITORY_MAP.put(id, product);
+            productRepository.save(product);
             return true;
         }
 

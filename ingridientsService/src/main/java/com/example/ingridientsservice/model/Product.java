@@ -1,13 +1,33 @@
 package com.example.ingridientsservice.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="products")
 public class Product {
 
+    @Id
+    @Column(name = "id")
+    @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_id_seq")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "carbs")
     private Double carbs;
+
+    @Column(name = "fats")
     private Double fats;
+
+    @Column(name = "proteins")
     private Double proteins;
+
+    @Column(name = "calories")
     private Double calories;
+
+    @Column(name = "article")
     private String article;
 
     public Product() {
