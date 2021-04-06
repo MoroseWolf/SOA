@@ -38,7 +38,15 @@ public class ProductServiceImpl implements  ProductService {
             productRepository.save(product);
             return true;
         }
+        return false;
+    }
 
+    @Override
+    public boolean delete(Long id) {
+        if(productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
+        }
         return false;
     }
 }
