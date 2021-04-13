@@ -32,8 +32,14 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void create(MenuDTO menuDTO) {
-        Menu newMenu = menuMapper.toMenu(menuDTO);
-        menuMapper.toMenuDTO(menuRepository.save(newMenu));
+        Menu menu = new Menu();
+        menu.setName(menuDTO.getName());
+        menu.setDay(menuDTO.getName());
+        menu.setSumm_calories(0.0);
+        for (Recipe rec : menuDTO.getRecipeSet()) {
+            rec.setId(null);
+        }
+        menuRepository.save(menu);
     }
 
     @Override

@@ -1,11 +1,6 @@
 package com.cyteam.api.controller;
 
 import com.cyteam.api.dto.RecipeDTO;
-import com.cyteam.api.mapper.IngridientsMapper;
-import com.cyteam.api.mapper.RecipeMapper;
-import com.cyteam.api.model.Recipe;
-import com.cyteam.api.repository.IngridientsRepository;
-import com.cyteam.api.service.IngridientsService;
 import com.cyteam.api.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,18 +15,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class RecipeController {
 
     private final RecipeService recipeService;
-    private final RecipeMapper recipeMapper;
-    private final IngridientsService ingridientsService;
-    private final IngridientsRepository ingridientsRepository;
-    private final IngridientsMapper ingridientsMapper;
 
     @Autowired
-    public RecipeController(RecipeService recipeService, RecipeMapper recipeMapper, IngridientsService ingridientsService, IngridientsRepository ingridientsRepository, IngridientsMapper ingridientsMapper) {
+    public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
-        this.recipeMapper = recipeMapper;
-        this.ingridientsService = ingridientsService;
-        this.ingridientsRepository = ingridientsRepository;
-        this.ingridientsMapper = ingridientsMapper;
     }
 
     @RequestMapping(
