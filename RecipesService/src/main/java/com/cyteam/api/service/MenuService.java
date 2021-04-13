@@ -1,18 +1,21 @@
 package com.cyteam.api.service;
 
-import com.cyteam.api.model.Menu;
+import com.cyteam.api.dto.IngridientsDTO;
+import com.cyteam.api.dto.MenuDTO;
 
 import java.util.List;
 
 public interface MenuService {
 
-    void create(Menu menu);
+    void create(MenuDTO menuDTO);
 
-    List<Menu> readAll();
+    List<MenuDTO> readAll();
 
-    Menu read(Long id);
+    MenuDTO read(Long id);
 
-    boolean update(Menu menu, Long id);
+    boolean update(MenuDTO menuDTO, Long id);
 
     boolean delete(Long id);
+
+    List<IngridientsDTO> readMenuIngridients(MenuDTO menuDTO);
 }

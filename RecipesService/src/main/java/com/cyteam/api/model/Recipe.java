@@ -25,13 +25,13 @@ public class Recipe {
 
     @NotBlank
     @Column(name = "summrecipe_calories")
-    private Integer summ_calories;
+    private Double summ_calories;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "recipeSet", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "recipeSet", fetch = FetchType.EAGER)
     private Set<Menu> menuSet = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "recipe_ingridients",
             joinColumns =  { @JoinColumn(name = "recipe_id", referencedColumnName = "id")},
             inverseJoinColumns = { @JoinColumn(name = "ingrid_id", referencedColumnName = "id")})
@@ -41,7 +41,7 @@ public class Recipe {
         super();
     }
 
-    public Recipe(Long id, String name, Integer summ_calories) {
+    public Recipe(Long id, String name, Double summ_calories) {
         super();
         this.id = id;
         this.name = name;
@@ -64,11 +64,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public Integer getSumm_calories() {
+    public Double getSumm_calories() {
         return summ_calories;
     }
 
-    public void setSumm_calories(Integer summ_calories) {
+    public void setSumm_calories(Double summ_calories) {
         this.summ_calories = summ_calories;
     }
 
