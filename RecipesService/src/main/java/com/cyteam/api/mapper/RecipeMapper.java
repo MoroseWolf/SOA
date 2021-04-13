@@ -1,7 +1,6 @@
 package com.cyteam.api.mapper;
 
 import com.cyteam.api.dto.RecipeDTO;
-import com.cyteam.api.model.Menu;
 import com.cyteam.api.model.Recipe;
 import org.mapstruct.Mapper;
 
