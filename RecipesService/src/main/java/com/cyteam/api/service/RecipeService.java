@@ -1,18 +1,20 @@
 package com.cyteam.api.service;
 
-import com.cyteam.api.model.Recipe;
+import com.cyteam.api.dto.RecipeDTO;
 
 import java.util.List;
 
 public interface RecipeService {
 
-    void create(Recipe recipe);
+    void create(RecipeDTO recipeDTO);
 
-    List<Recipe> readAll();
+    List<RecipeDTO> readAll();
 
-    Recipe read(Long id);
+    RecipeDTO read(Long id);
 
-    boolean update(Recipe recipe, Long id);
+    boolean update(RecipeDTO recipeDTO, Long id);
 
     boolean delete(Long id);
+
+    void createToMenu(RecipeDTO recipeDTO, Long id);
 }

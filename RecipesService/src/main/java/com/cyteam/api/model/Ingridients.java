@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="ingridients")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ingridients {
 
     @Id
@@ -29,15 +29,15 @@ public class Ingridients {
 
     @NotBlank
     @Column(name = "calories")
-    private Integer calories;
+    private Double calories;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "ingridSet", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "ingridSet", fetch = FetchType.EAGER)
     private Set<Recipe> recipesSet = new HashSet<>();
 
     public Ingridients(){ super();}
 
-    public Ingridients(Long id, @NotBlank String name, @NotBlank String article, @NotBlank Integer calories) {
+    public Ingridients(Long id, @NotBlank String name, @NotBlank String article, @NotBlank Double calories) {
         super();
         this.id = id;
         this.name = name;
@@ -69,11 +69,11 @@ public class Ingridients {
         this.article = article;
     }
 
-    public Integer getCalories() {
+    public Double getCalories() {
         return calories;
     }
 
-    public void setCalories(Integer calories) {
+    public void setCalories(Double calories) {
         this.calories = calories;
     }
 

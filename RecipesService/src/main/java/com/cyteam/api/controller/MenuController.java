@@ -1,11 +1,15 @@
 package com.cyteam.api.controller;
 
-import com.cyteam.api.model.Menu;
+import com.cyteam.api.dto.IngridientsDTO;
+import com.cyteam.api.dto.MenuDTO;
+import com.cyteam.api.dto.RecipeDTO;
 import com.cyteam.api.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -23,16 +27,16 @@ public class MenuController {
     @RequestMapping(
             value = "/menu",
             method = POST )
-    public ResponseEntity<?> create(@RequestBody Menu menu) {
-        menuService.create(menu);
+    public ResponseEntity<?> create(@RequestBody MenuDTO menuDTO) {
+        menuService.create(menuDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(
             value = "/menu",
             method = GET )
-    public ResponseEntity<List<Menu>> read () {
-        final List<Menu> menuList = menuService.readAll();
+    public ResponseEntity<List<MenuDTO>> read () {
+        final List<MenuDTO> menuList = menuService.readAll();
 
         return  menuList != null && !menuList.isEmpty()
                 ? new ResponseEntity<>(menuList, HttpStatus.OK)
@@ -43,11 +47,11 @@ public class MenuController {
             value = "/menu",
             params = "id",
             method = GET)
-    public ResponseEntity<Menu> read(@RequestParam("id") Long id) {
-        final Menu menu = menuService.read(id);
+    public ResponseEntity<MenuDTO> read(@RequestParam("id") Long id) {
+        final MenuDTO menuDTO = menuService.read(id);
 
-        return menu != null
-                ? new ResponseEntity<>(menu, HttpStatus.OK)
+        return menuDTO != null
+                ? new ResponseEntity<>(menuDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -55,8 +59,8 @@ public class MenuController {
             value = "/menu",
             params = "id",
             method = PUT)
-    public ResponseEntity<?> update(@RequestParam("id") Long id, @RequestBody Menu menu) {
-        final boolean updated = menuService.update(menu, id);
+    public ResponseEntity<?> update(@RequestParam("id") Long id, @RequestBody MenuDTO menuDTO) {
+        final boolean updated = menuService.update(menuDTO, id);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -73,5 +77,24 @@ public class MenuController {
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+    @RequestMapping(
+            value = "/menu/buy",
+            params = "id",
+            method = POST )
+    public ResponseEntity<List<IngridientsDTO>>buyIngridients(@RequestParam("id") Long id) {
+        MenuDTO menuDTO = menuService.read(id);
+        List<IngridientsDTO> ingridList = menuService.readMenuIngridients(menuDTO);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String resourceUrl = "http://192.168.43.26:9075/api/Ingredients";
+
+
+        ResponseEntity<IngridientsDTO[]> response = restTemplate.getForEntity(resourceUrl, IngridientsDTO[].class);
+        IngridientsDTO[] ingrids = response.getBody();
+        return  ingrids != null && !ingridList.isEmpty()
+                ? new ResponseEntity<>(ingridList, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

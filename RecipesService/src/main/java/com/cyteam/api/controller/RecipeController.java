@@ -1,6 +1,11 @@
 package com.cyteam.api.controller;
 
+import com.cyteam.api.dto.RecipeDTO;
+import com.cyteam.api.mapper.IngridientsMapper;
+import com.cyteam.api.mapper.RecipeMapper;
 import com.cyteam.api.model.Recipe;
+import com.cyteam.api.repository.IngridientsRepository;
+import com.cyteam.api.service.IngridientsService;
 import com.cyteam.api.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,25 +20,33 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final RecipeMapper recipeMapper;
+    private final IngridientsService ingridientsService;
+    private final IngridientsRepository ingridientsRepository;
+    private final IngridientsMapper ingridientsMapper;
 
     @Autowired
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, RecipeMapper recipeMapper, IngridientsService ingridientsService, IngridientsRepository ingridientsRepository, IngridientsMapper ingridientsMapper) {
         this.recipeService = recipeService;
+        this.recipeMapper = recipeMapper;
+        this.ingridientsService = ingridientsService;
+        this.ingridientsRepository = ingridientsRepository;
+        this.ingridientsMapper = ingridientsMapper;
     }
 
     @RequestMapping(
             value = "/recipe",
             method = POST )
-    public ResponseEntity<?> create(@RequestBody Recipe recipe) {
-        recipeService.create(recipe);
+    public ResponseEntity<?> create(@RequestBody RecipeDTO recipeDTO) {
+        recipeService.create(recipeDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(
             value = "/recipe",
             method = GET )
-    public ResponseEntity<List<Recipe>> read() {
-        final List<Recipe> recipeList = recipeService.readAll();
+    public ResponseEntity<List<RecipeDTO>> read() {
+        final List<RecipeDTO> recipeList = recipeService.readAll();
 
         return recipeList != null && !recipeList.isEmpty()
                 ? new ResponseEntity<>(recipeList, HttpStatus.OK)
@@ -45,11 +58,11 @@ public class RecipeController {
             value = "/recipe",
             params = "id",
             method = GET)
-    public ResponseEntity<Recipe> read(@RequestParam("id") Long id) {
-        final Recipe recipe = recipeService.read(id);
+    public ResponseEntity<RecipeDTO> read(@RequestParam("id") Long id) {
+        final RecipeDTO recipeDTO = recipeService.read(id);
 
-        return recipe != null
-                ? new ResponseEntity<>(recipe, HttpStatus.OK)
+        return recipeDTO != null
+                ? new ResponseEntity<>(recipeDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -57,8 +70,8 @@ public class RecipeController {
             value = "/recipe",
             params = "id",
             method = PUT)
-    public ResponseEntity<?> update(@RequestParam("id") Long id, @RequestBody Recipe recipe) {
-        final boolean updated = recipeService.update(recipe, id);
+    public ResponseEntity<?> update(@RequestParam("id") Long id, @RequestBody RecipeDTO recipeDTO) {
+        final boolean updated = recipeService.update(recipeDTO, id);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -76,4 +89,5 @@ public class RecipeController {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
+
 }
